@@ -8,7 +8,7 @@ from tqdm import tqdm
 from dict import choose_item_dict
 import re
 
-data = pd.read_excel('./data/pre/merge_2.xlsx')
+data = pd.read_excel('./data/pre/2_merge_2.xlsx')
 
 item_map = {}
 patients_data_list = []
@@ -20,4 +20,4 @@ for key in choose_item_dict.keys():
         if re.match(r';\d+;', str(data.loc[i, key])):
             data.loc[i, key] = int(data.loc[i, key][1: -1])
 
-data.to_excel('./data/pre/merge_3.xlsx')
+data.to_excel('./data/pre/2_merge_3.xlsx')

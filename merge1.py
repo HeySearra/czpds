@@ -5,6 +5,7 @@ import sys
 import pandas as pd
 import json
 
+from dict import merge_dict1
 
 data_0 = pd.read_csv('./data/PDS_CZ_0_.csv')
 data_1 = pd.read_csv('./data/PDS_CZ_1_.csv')
@@ -16,7 +17,7 @@ from tqdm import tqdm
 
 for _, i in tqdm(data_1.iterrows(), total=data_1.shape[0]):
     # if tot > 10: break
-    if i['sectionID'] not in [167, 1000004, 132]:
+    if i['sectionID'] not in merge_dict1.keys():
         continue
     for _, j in data_0.iterrows():
         # if tot > 10: break
@@ -78,6 +79,6 @@ for _, i in tqdm(data_1.iterrows(), total=data_1.shape[0]):
 #         patients_data_list.remove(i)
 #         space_count += 1
 # print("space: ", space_count)
-print(tot)
+print(tot) # 14314
 df_excel = pd.read_json(json.dumps(patients_data_list, ensure_ascii=False))
-df_excel.to_excel('./data/pre/merge_1.xlsx', index=False)
+df_excel.to_excel('./data/pre/2_merge_1.xlsx', index=False)

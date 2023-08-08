@@ -5,9 +5,10 @@ import sys
 import pandas as pd
 import json
 from tqdm import tqdm
-from dict import merge_dict
+from dict import merge_dict2, merge_dict1
 
-data = pd.read_excel('./data/pre/merge_1_1.xlsx')
+data = pd.read_excel('./data/pre/2_merge_1.xlsx')
+data_83 = pd.read_excel('./data/pre/2_merge_83.xlsx')
 
 item_map = {}  # 防止重复双主键 (PatientID & Time)
 patients_data_list = []
@@ -19,7 +20,7 @@ for _, i in tqdm(data.iterrows(), total=data.shape[0]):
         item_map[str(i['userId']) + i['actualExamineDate']] = 1
     else:
         patient_item = patients_temp[str(i['userId']) + i['actualExamineDate']]
-    key = merge_dict[i['sectionID']][i['itemId']]
+    key = merge_dict1[i['sectionID']]+ '_' + merge_dict2[i['sectionID']][i['itemId']]
     if key not in key_list:
         key_list.append(key)
     patient_item['userId'] = i['userId'] if 'userId' not in patient_item.keys() else patient_item['userId']
@@ -32,9 +33,11 @@ for _, i in tqdm(data.iterrows(), total=data.shape[0]):
     patient_item['birthday'] = i['birthday'] if 'birthday' not in patient_item.keys() else patient_item['birthday']
     patient_item['diyCode'] = i['diyCode'] if 'diyCode' not in patient_item.keys() else patient_item['diyCode']
     patient_item['userTag'] = i['userTag'] if 'userTag' not in patient_item.keys() else patient_item['userTag']
+    # for _, j in data_83.iterrows():
+    #     if patient_item['userId'] == j['userId'] and patient_item['首次日期'] == j['itemValue']:
 
     patients_temp[str(i['userId']) + i['actualExamineDate']] = patient_item
 
-# for
+
 df_excel = pd.read_json(json.dumps(list(patients_temp.values()), ensure_ascii=False))
-df_excel.to_excel('./data/pre/merge_2.xlsx', index=False)
+df_excel.to_excel('./data/pre/2_merge_2.xlsx', index=False)
